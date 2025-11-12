@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: linear-gradient(180deg, #77267E 0%, #4D26A3 100%);
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #7c3aed rgba(76, 29, 149, 0.25);
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: rgba(76, 29, 149, 0.15);
+  }
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #7c3aed 0%, #4c1d95 100%);
+    border-radius: 9999px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #a855f7 0%, #6d28d9 100%);
+  }
+  section[id] {
+    scroll-margin-top: 7.5rem;
+  }
+}
+
+@layer utilities {
+  .bg-brand-pattern {
+    background-image: url('/pattern.png');
+    background-size: 280px;
+    background-repeat: repeat;
+    background-position: center;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .text-glow {
+    text-shadow:
+      0 0 20px rgba(209, 0, 255, 0.5),
+      0 0 40px rgba(209, 0, 255, 0.3);
+  }
+
+  .box-glow {
+    box-shadow:
+      0 0 30px rgba(209, 0, 255, 0.3),
+      0 0 60px rgba(209, 0, 255, 0.15);
+  }
+
+  .btn-glow {
+    box-shadow:
+      0 0 20px rgba(209, 0, 255, 0.4),
+      0 0 40px rgba(209, 0, 255, 0.2);
+  }
+
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(209, 0, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(209, 0, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes grid-flow {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 50px 50px;
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .animate-grid-flow {
+    animation: grid-flow 20s linear infinite;
+  }
+}
