@@ -13,6 +13,7 @@ import ProcessFlow from './pages/dashboard/ProcessFlow';
 import KnowledgeBase from './pages/dashboard/KnowledgeBase';
 import ClientPortal from './pages/dashboard/ClientPortal';
 import Blog from './pages/blog/Blog';
+import BlogDetail from './pages/blog/BlogDetail';
 import NewHeader from './new-home/NewHeader';
 import NewHero from './new-home/NewHero';
 import ConceptSection from './new-home/ConceptSection';
@@ -89,6 +90,7 @@ function App() {
           <Route path="/process-flow" element={<ProcessFlow />} />
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
           <Route path="/client-portal" element={<ClientPortal />} />
+          <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />

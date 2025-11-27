@@ -15,7 +15,7 @@ import { faqs } from '../../data/faqs';
 
 const KnowledgeBase = () => {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-b from-purple-950 via-purple-900 to-indigo-900">
       <Header />
       <main>
         <Hero />
