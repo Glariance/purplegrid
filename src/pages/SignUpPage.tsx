@@ -49,6 +49,13 @@ const SignUpPage = () => {
     try {
       await register(form);
       toast.fire({ icon: 'success', title: 'Account created. Welcome aboard!' });
+      setForm({
+        name: '',
+        email: '',
+        company: '',
+        password: '',
+        password_confirmation: '',
+      });
       navigate('/dashboard');
     } catch (error) {
       const messages = extractMessages(error);

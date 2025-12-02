@@ -44,6 +44,15 @@ const ResetPasswordPage = () => {
       await resetPassword(form);
       setStatus('saved');
       toast.fire({ icon: 'success', title: 'Password reset successfully. Please log in.' });
+      setForm({
+        email: '',
+        token: '',
+        password: '',
+        password_confirmation: '',
+      });
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 2000);
     } catch (error) {
       const messages = extractMessages(error);
       toast.fire({ icon: 'error', html: messages.join('<br/>') });
@@ -110,7 +119,6 @@ const ResetPasswordPage = () => {
                       <input
                         type="email"
                         name="email"
-                        required
                         value={form.email}
                         onChange={handleChange}
                         className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -124,7 +132,6 @@ const ResetPasswordPage = () => {
                     <input
                       type="text"
                       name="token"
-                      required
                       value={form.token}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -139,7 +146,6 @@ const ResetPasswordPage = () => {
                       <input
                         type="password"
                         name="password"
-                        required
                         value={form.password}
                         onChange={handleChange}
                         className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -155,7 +161,6 @@ const ResetPasswordPage = () => {
                       <input
                         type="password"
                         name="password_confirmation"
-                        required
                         value={form.password_confirmation}
                         onChange={handleChange}
                         className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent"

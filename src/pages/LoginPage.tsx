@@ -39,6 +39,7 @@ const LoginPage = () => {
     try {
       await login(form.email, form.password);
       toast.fire({ icon: 'success', title: 'Logged in successfully' });
+      setForm({ email: '', password: '' });
       const destination =
         (location.state as { from?: string } | null)?.from && typeof (location.state as { from?: string }).from === 'string'
           ? (location.state as { from: string }).from
