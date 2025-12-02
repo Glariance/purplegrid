@@ -16,6 +16,7 @@ import {
   FileText,
   Globe,
   Home,
+  LogOut,
   Mail,
   MessageSquare,
   Phone,
@@ -27,17 +28,20 @@ import {
   Zap
 } from 'lucide-react';
 
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import SlideInSection from '../../components/SlideInSection';
 import AnimatedNumber from '../../components/AnimatedNumber';
 import { faqs } from '../../data/faqs';
+import { useAuth } from '../../context/AuthContext';
 
 const TransparencyHub = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('week');
   const [selectedVA, setSelectedVA] = useState('all');
   const location = useLocation();
   const { pathname } = location;
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const overallStats = {
     totalTasks: 847,
@@ -376,13 +380,26 @@ const TransparencyHub = () => {
               </select>
             </div>
             <div className="mt-6 flex justify-center">
-              <Link
-                to="/"
-                className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-[#9333EA] text-white hover:bg-purple-700 transition-colors"
-                aria-label="Go to homepage"
-              >
-                <Home className="h-7 w-7" />
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/"
+                  className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-[#9333EA] text-white hover:bg-purple-700 transition-colors"
+                  aria-label="Go to homepage"
+                >
+                  <Home className="h-7 w-7" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await logout();
+                    navigate('/login');
+                  }}
+                  className="inline-flex items-center justify-center h-12 w-12 rounded-full border border-white/50 text-white hover:bg-white/10 transition-colors"
+                  aria-label="Log out"
+                >
+                  <LogOut className="h-7 w-7" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

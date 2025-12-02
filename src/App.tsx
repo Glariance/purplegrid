@@ -21,6 +21,11 @@ import CarouselSection from './new-home/CarouselSection';
 import BenefitsSection from './new-home/BenefitsSection';
 import TestimonialSection from './new-home/TestimonialSection';
 import CTASection from './new-home/CTASection';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const ScrollToHash = () => {
   const location = useLocation();
@@ -82,14 +87,20 @@ function App() {
       <div className="min-h-screen">
         <ScrollToHash />
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/transparency-hub" element={<TransparencyHub />} />
-          <Route path="/crm-snapshot" element={<CRMSnapshot />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/meet-your-grid" element={<MeetYourGrid />} />
-          <Route path="/process-flow" element={<ProcessFlow />} />
-          <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          <Route path="/client-portal" element={<ClientPortal />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="transparency-hub" element={<TransparencyHub />} />
+            <Route path="crm-snapshot" element={<CRMSnapshot />} />
+            <Route path="case-studies" element={<CaseStudies />} />
+            <Route path="meet-your-grid" element={<MeetYourGrid />} />
+            <Route path="process-flow" element={<ProcessFlow />} />
+            <Route path="knowledge-base" element={<KnowledgeBase />} />
+            <Route path="client-portal" element={<ClientPortal />} />
+          </Route>
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/about" element={<AboutPage />} />

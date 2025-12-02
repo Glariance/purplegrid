@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { UserPlus, LogIn, Menu, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const scrollToSection = (sectionId: string) => {
     const normalizedId = sectionId.replace(/^#/, '');
@@ -22,6 +24,12 @@ const Header = () => {
 
   const goTo = (path: string) => {
     navigate(path);
+    setIsOpen(false);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
     setIsOpen(false);
   };
 
@@ -100,20 +108,41 @@ const Header = () => {
 
             {/* CTA Buttons */}
             <div className="flex justify-center md:justify-end gap-3">
-              <button
-                onClick={() => goTo('/dashboard')}
-                className="flex items-center gap-2 bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-purple-700 transition-colors"
-              >
-                <UserPlus className="h-5 w-5" />
-                Sign Up
-              </button>
-              <button
-                onClick={() => goTo('/dashboard')}
-                className="flex items-center gap-2 border border-purple-600 text-purple-600 px-5 py-2 rounded-lg hover:bg-purple-50 transition-colors"
-              >
-                <LogIn className="h-5 w-5" />
-                Login
-              </button>
+              {user ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => goTo('/dashboard')}
+                    className="inline-flex items-center gap-2 rounded-lg bg-purple-50 text-purple-800 px-4 py-2 font-semibold border border-purple-100 hover:bg-purple-100 transition-colors"
+                  >
+                    Welcome, {user.name}
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 border border-purple-600 text-purple-600 px-5 py-2 rounded-lg hover:bg-purple-50 transition-colors"
+                  >
+                    <LogIn className="h-5 w-5 rotate-180" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => goTo('/sign-up')}
+                    className="flex items-center gap-2 bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                  >
+                    <UserPlus className="h-5 w-5" />
+                    Sign Up
+                  </button>
+                  <button
+                    onClick={() => goTo('/login')}
+                    className="flex items-center gap-2 border border-purple-600 text-purple-600 px-5 py-2 rounded-lg hover:bg-purple-50 transition-colors"
+                  >
+                    <LogIn className="h-5 w-5" />
+                    Login
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
@@ -183,20 +212,37 @@ const Header = () => {
               </button>
             </nav>
             <div className="grid grid-cols-1 gap-3 p-4">
-              <button
-                onClick={() => goTo('/dashboard')}
-                className="flex items-center justify-center gap-2 bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-purple-700 transition-colors"
-              >
-                <UserPlus className="h-5 w-5" />
-                Sign Up
-              </button>
-              <button
-                onClick={() => goTo('/dashboard')}
-                className="flex items-center justify-center gap-2 border border-purple-600 text-purple-600 px-5 py-2 rounded-lg hover:bg-purple-50 transition-colors"
-              >
-                <LogIn className="h-5 w-5" />
-                Login
-              </button>
+              {user ? (
+                <>
+                  <div className="flex items-center justify-center gap-2 rounded-lg bg-purple-50 text-purple-800 px-5 py-2 font-semibold border border-purple-100">
+                    Welcome, {user.name}
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center justify-center gap-2 border border-purple-600 text-purple-600 px-5 py-2 rounded-lg hover:bg-purple-50 transition-colors"
+                  >
+                    <LogIn className="h-5 w-5 rotate-180" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => goTo('/sign-up')}
+                    className="flex items-center justify-center gap-2 bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                  >
+                    <UserPlus className="h-5 w-5" />
+                    Sign Up
+                  </button>
+                  <button
+                    onClick={() => goTo('/login')}
+                    className="flex items-center justify-center gap-2 border border-purple-600 text-purple-600 px-5 py-2 rounded-lg hover:bg-purple-50 transition-colors"
+                  >
+                    <LogIn className="h-5 w-5" />
+                    Login
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}

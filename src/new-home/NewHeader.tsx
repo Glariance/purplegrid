@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserPlus, LogIn, Menu, X } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const NewHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     setIsOpen(false);
@@ -95,22 +97,47 @@ const NewHeader = () => {
           </nav>
 
           <div className="flex items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center gap-2 bg-gradient-to-r from-[#5A00B0] to-[#D100FF] text-white px-5 py-2 rounded-lg hover:scale-105 transition-transform"
-            >
-              <UserPlus className="h-5 w-5" />
-              Sign Up
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center gap-2 border border-[#D100FF] text-white px-5 py-2 rounded-lg hover:bg-white/10 transition-colors"
-            >
-              <LogIn className="h-5 w-5" />
-              Login
-            </button>
+            {user ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => navigate('/dashboard')}
+                  className="inline-flex items-center gap-2 rounded-lg bg-white/10 text-white px-4 py-2 font-semibold border border-white/15 hover:bg-white/15 transition-colors"
+                >
+                  Welcome, {user.name}
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await logout();
+                    navigate('/login');
+                  }}
+                  className="flex items-center gap-2 border border-[#D100FF] text-white px-5 py-2 rounded-lg hover:bg-white/10 transition-colors"
+                >
+                  <LogIn className="h-5 w-5 rotate-180" />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => navigate('/sign-up')}
+                  className="flex items-center gap-2 bg-gradient-to-r from-[#5A00B0] to-[#D100FF] text-white px-5 py-2 rounded-lg hover:scale-105 transition-transform"
+                >
+                  <UserPlus className="h-5 w-5" />
+                  Sign Up
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  className="flex items-center gap-2 border border-[#D100FF] text-white px-5 py-2 rounded-lg hover:bg-white/10 transition-colors"
+                >
+                  <LogIn className="h-5 w-5" />
+                  Login
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -181,22 +208,57 @@ const NewHeader = () => {
             </button>
           </nav>
           <div className="grid grid-cols-1 gap-3 p-4">
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#5A00B0] to-[#D100FF] text-white px-5 py-2 rounded-lg hover:scale-105 transition-transform"
-            >
-              <UserPlus className="h-5 w-5" />
-              Sign Up
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center justify-center gap-2 border border-[#D100FF] text-[#5A00B0] px-5 py-2 rounded-lg hover:bg-[#f7f1fc] transition-colors"
-            >
-              <LogIn className="h-5 w-5" />
-              Login
-            </button>
+            {user ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate('/dashboard');
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 rounded-lg bg-[#f7f1fc] text-[#5A00B0] px-5 py-2 font-semibold border border-[#e4d3f3] hover:bg-[#e9daf7] transition-colors"
+                >
+                  Welcome, {user.name}
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await logout();
+                    navigate('/login');
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 border border-[#D100FF] text-[#5A00B0] px-5 py-2 rounded-lg hover:bg-[#f7f1fc] transition-colors"
+                >
+                  <LogIn className="h-5 w-5 rotate-180" />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate('/sign-up');
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#5A00B0] to-[#D100FF] text-white px-5 py-2 rounded-lg hover:scale-105 transition-transform"
+                >
+                  <UserPlus className="h-5 w-5" />
+                  Sign Up
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate('/login');
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 border border-[#D100FF] text-[#5A00B0] px-5 py-2 rounded-lg hover:bg-[#f7f1fc] transition-colors"
+                >
+                  <LogIn className="h-5 w-5" />
+                  Login
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

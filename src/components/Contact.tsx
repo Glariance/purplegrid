@@ -1,21 +1,64 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { submitContactInquiry } from '../lib/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
+    phone: '',
     service: '',
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+
+    setStatus('submitting');
+    setErrorMessage('');
+
+    const subjectParts = [
+      formData.service ? `Service: ${formData.service}` : '',
+      formData.company ? `Company: ${formData.company}` : ''
+    ].filter(Boolean);
+
+    try {
+      await submitContactInquiry({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim() || undefined,
+        subject: subjectParts.join(' | ') || 'Website Inquiry',
+        message: `${formData.message.trim()}\n\nService Interest: ${formData.service || 'Not specified'}\nCompany: ${formData.company || 'Not provided'}`
+      });
+
+      setStatus('success');
+      setIsSubmitted(true);
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        service: '',
+        message: ''
+      });
+
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setStatus('idle');
+      }, 3000);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again.';
+
+      setStatus('error');
+      setErrorMessage(message);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -29,20 +72,21 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      details: "hello@purplegridmarketing.com",
+      details: "info@purplegridmarketing.com",
       subtext: "We'll respond within 24 hours"
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: "+1 (555) 123-4567",
+      details: "+44 (7304) 322-465",
+      details2: "+1 (646) 814-3137",
       subtext: "Mon-Fri, 9AM-6PM EST"
     },
     {
       icon: MapPin,
       title: "Headquarters",
-      details: "New York, NY, USA",
-      subtext: "Serving businesses globally"
+      details: "Unit A and B Farringdon Avenue Business Center,",
+      subtext: "Romford East London RM3 8EN"
     },
     {
       icon: Clock,
@@ -68,7 +112,7 @@ const Contact = () => {
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h3>
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h3>
             
             {isSubmitted ? (
               <div className="text-center py-8">
@@ -125,6 +169,20 @@ const Contact = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="+1 (234) 567-8901"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Service Interested In
                   </label>
                   <select
@@ -153,17 +211,35 @@ const Contact = () => {
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
+                    required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Describe your current challenges and what you're looking to achieve..."
                   />
                 </div>
 
+                {status === 'error' && errorMessage && (
+                  <div className="flex items-start space-x-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+                    <AlertCircle className="mt-0.5 h-5 w-5" />
+                    <p className="text-sm">{errorMessage}</p>
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full bg-purple-600 text-white py-4 rounded-lg font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center"
+                  disabled={status === 'submitting'}
+                  className="w-full bg-purple-600 text-white py-4 rounded-lg font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Send Message
-                  <Send className="ml-2 h-5 w-5" />
+                  {status === 'submitting' ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="ml-2 h-5 w-5" />
+                    </>
+                  )}
                 </button>
               </form>
             )}
@@ -188,6 +264,7 @@ const Contact = () => {
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">{info.title}</h4>
                     <p className="text-purple-600 font-medium mb-1">{info.details}</p>
+                    <p className="text-purple-600 font-medium mb-1">{info.details2}</p>
                     <p className="text-sm text-gray-500">{info.subtext}</p>
                   </div>
                 </div>

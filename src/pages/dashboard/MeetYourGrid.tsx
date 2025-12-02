@@ -13,10 +13,12 @@ import {
   Headphones,
   Sparkles,
   ShieldCheck,
-  Home
+  Home,
+  LogOut
 } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
+import { useAuth } from '../../context/AuthContext';
 
 const teamMembers = [
   {
@@ -129,6 +131,8 @@ const aiToolkit = [
 
 const MeetYourGrid = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const navigationItems = [
     { label: 'Overview', href: '#overview' },
@@ -180,13 +184,26 @@ const MeetYourGrid = () => {
               </button>
             </div>
             <div className="mt-6 flex justify-center">
-              <Link
-                to="/"
-                className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-[#9333EA] text-white hover:bg-purple-700 transition-colors"
-                aria-label="Go to homepage"
-              >
-                <Home className="h-7 w-7" />
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/"
+                  className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-[#9333EA] text-white hover:bg-purple-700 transition-colors"
+                  aria-label="Go to homepage"
+                >
+                  <Home className="h-7 w-7" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await logout();
+                    navigate('/login');
+                  }}
+                  className="inline-flex items-center justify-center h-12 w-12 rounded-full border border-white/50 text-white hover:bg-white/10 transition-colors"
+                  aria-label="Log out"
+                >
+                  <LogOut className="h-7 w-7" />
+                </button>
+              </div>
             </div>
             </div>
           </div>
