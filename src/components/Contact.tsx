@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { submitContactInquiry } from '../lib/api';
+import { submitContactInquiry, ApiError } from '../lib/api';
+import { toast } from '../lib/toast';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -21,22 +22,20 @@ const Contact = () => {
     setStatus('submitting');
     setErrorMessage('');
 
-    const subjectParts = [
-      formData.service ? `Service: ${formData.service}` : '',
-      formData.company ? `Company: ${formData.company}` : ''
-    ].filter(Boolean);
-
     try {
       await submitContactInquiry({
         name: formData.name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim() || undefined,
-        subject: subjectParts.join(' | ') || 'Website Inquiry',
-        message: `${formData.message.trim()}\n\nService Interest: ${formData.service || 'Not specified'}\nCompany: ${formData.company || 'Not provided'}`
+        subject: 'Website Inquiry',
+        service: formData.service,
+        company: formData.company,
+        message: formData.message.trim()
       });
 
       setStatus('success');
       setIsSubmitted(true);
+      toast.fire({ icon: 'success', title: 'Message sent! We will reply within 24 hours.' });
       setFormData({
         name: '',
         email: '',
@@ -51,13 +50,25 @@ const Contact = () => {
         setStatus('idle');
       }, 3000);
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong. Please try again.';
+      const message = (() => {
+        if (error instanceof ApiError) {
+          const details = error.details as { errors?: Record<string, string[]> } | string | undefined;
+          if (details && typeof details === 'object' && 'errors' in details && details.errors) {
+            const all = Object.values(details.errors)
+              .flat()
+              .filter((msg): msg is string => typeof msg === 'string');
+            if (all.length) return all.join('<br/>');
+          }
+          if (typeof details === 'string') return details;
+          return error.message;
+        }
+        if (error instanceof Error) return error.message;
+        return 'Something went wrong. Please try again.';
+      })();
 
       setStatus('error');
       setErrorMessage(message);
+      toast.fire({ icon: 'error', html: message });
     }
   };
 
@@ -78,8 +89,8 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Call Us",
-      details: "+44 (7304) 322-465",
-      details2: "+1 (646) 814-3137",
+      details: { label: "+44 (7304) 322-465", href: "tel:+447304322465" },
+      details2: { label: "+1 (646) 814-3137", href: "tel:+16468143137" },
       subtext: "Mon-Fri, 9AM-6PM EST"
     },
     {
@@ -130,10 +141,9 @@ const Contact = () => {
                     <input
                       type="text"
                       name="name"
-                      required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                       placeholder="John Doe"
                     />
                   </div>
@@ -144,10 +154,9 @@ const Contact = () => {
                     <input
                       type="email"
                       name="email"
-                      required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                       placeholder="john@company.com"
                     />
                   </div>
@@ -162,7 +171,7 @@ const Contact = () => {
                     name="company"
                     value={formData.company}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                     placeholder="Your Company Inc."
                   />
                 </div>
@@ -176,7 +185,7 @@ const Contact = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                     placeholder="+1 (234) 567-8901"
                   />
                 </div>
@@ -189,16 +198,16 @@ const Contact = () => {
                     name="service"
                     value={formData.service}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
                   >
                     <option value="">Select a service</option>
-                    <option value="social-media">Social Media Assistant</option>
-                    <option value="seo-content">SEO/Content VA</option>
-                    <option value="clerical">Clerical VA</option>
-                    <option value="cold-caller">Cold Caller / Closer</option>
-                    <option value="ads-monitor">Ads Campaign Monitor</option>
-                    <option value="multiple">Multiple Services</option>
-                    <option value="custom">Custom Solution</option>
+                    <option value="Social Media Assistant">Social Media Assistant</option>
+                    <option value="SEO/Content VA">SEO/Content VA</option>
+                    <option value="Clerical VA">Clerical VA</option>
+                    <option value="Cold Caller / Closer">Cold Caller / Closer</option>
+                    <option value="Ads Campaign Monitor">Ads Campaign Monitor</option>
+                    <option value="Multiple Services">Multiple Services</option>
+                    <option value="Custom Solution">Custom Solution</option>
                   </select>
                 </div>
 
@@ -211,18 +220,17 @@ const Contact = () => {
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                     placeholder="Describe your current challenges and what you're looking to achieve..."
                   />
                 </div>
 
-                {status === 'error' && errorMessage && (
+                {/* {status === 'error' && errorMessage && (
                   <div className="flex items-start space-x-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
                     <AlertCircle className="mt-0.5 h-5 w-5" />
                     <p className="text-sm">{errorMessage}</p>
                   </div>
-                )}
+                )} */}
 
                 <button
                   type="submit"
@@ -263,8 +271,28 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">{info.title}</h4>
-                    <p className="text-purple-600 font-medium mb-1">{info.details}</p>
-                    <p className="text-purple-600 font-medium mb-1">{info.details2}</p>
+                    {info.title === 'Email Us' ? (
+                      <p className="text-purple-600 font-medium mb-1">
+                        <a href={`mailto:${info.details}`} className="hover:underline">
+                          {info.details}
+                        </a>
+                      </p>
+                    ) : (
+                      <>
+                        <p className="text-purple-600 font-medium mb-1">
+                          <a href={(info.details as { href: string }).href} className="hover:underline">
+                            {(info.details as { label: string }).label}
+                          </a>
+                        </p>
+                        {info.details2 && (
+                          <p className="text-purple-600 font-medium mb-1">
+                            <a href={(info.details2 as { href: string }).href} className="hover:underline">
+                              {(info.details2 as { label: string }).label}
+                            </a>
+                          </p>
+                        )}
+                      </>
+                    )}
                     <p className="text-sm text-gray-500">{info.subtext}</p>
                   </div>
                 </div>
@@ -278,7 +306,16 @@ const Contact = () => {
                 Schedule a 30-minute call to discuss your specific needs and see how 
                 our HaaS model can benefit your business.
               </p>
-              <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
+              <button
+                type="button"
+                onClick={() => {
+                  const tawkAPI = (window as any).Tawk_API;
+                  if (tawkAPI && typeof tawkAPI.toggle === 'function') {
+                    tawkAPI.toggle();
+                  }
+                }}
+                className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors"
+              >
                 Book Free Call
               </button>
             </div>

@@ -45,13 +45,11 @@ const Footer = () => {
         <div className="grid lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
             <div className="flex items-center space-x-2 mb-6">
-              <div className="bg-gradient-to-r from-[#5A00B0] to-[#D100FF] p-2 rounded-lg">
-                <Grid3X3 className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold">Purple Grid</h3>
-                <p className="text-purple-300">Marketing</p>
-              </div>
+              <img
+                src="/home-logo.png"
+                alt="Purple Grid Marketing logo"
+                className="h-20 w-auto object-contain"
+              />
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Revolutionizing business operations with our Human as a Service
