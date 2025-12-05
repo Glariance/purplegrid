@@ -1,4 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import {
   Grid3X3,
   Mail,
@@ -10,32 +12,40 @@ import {
 } from "lucide-react";
 
 const services = [
-  "Social Media Assistant",
-  "SEO/Content VA",
-  "Clerical VA",
-  "Cold Caller / Closer",
-  "Ads Campaign Monitor",
+  { label: "Dashboard Home", path: "/dashboard" },
+  { label: "Transparency Hub", path: "/transparency-hub" },
+  { label: "CRM Snapshot", path: "/crm-snapshot" },
+  { label: "Meet Your Grid", path: "/meet-your-grid" },
+  { label: "Client Portal", path: "/client-portal" },
 ];
 
 const company = [
-  "About Us",
-  "Problem Resolved",
-  "Brand Story",
-  "Our Team",
-  "Careers",
-  "Case Studies",
-  "Blog",
+  { label: "About Us", href: "/about" },
+  { label: "Problem Resolved", href: "/process-flow" },
+  { label: "Brand Story", href: "/about" },
+  { label: "Our Team", href: "/meet-your-grid" },
+  { label: "Careers", href: "/contact" },
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "Blog", href: "/blog" },
 ];
 
 const support = [
-  "Help Center",
-  "Contact Us",
-  "Privacy Policy",
-  "Terms of Service",
-  "Cookie Policy",
+  { label: "Help Center", href: "/knowledge-base" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const goToProtected = (path: string) => {
+    if (user) {
+      navigate(path);
+    } else {
+      navigate("/login", { state: { from: path } });
+    }
+  };
+
   return (
     <footer className="relative bg-black text-white border-t border-[#5A00B0]/30 overflow-hidden">
       <div className="absolute inset-0 opacity-20">
@@ -57,10 +67,15 @@ const Footer = () => {
               at cost-effective rates.
             </p>
             <div className="flex space-x-4">
-              {[Linkedin, Twitter, Facebook].map((Icon) => (
+              {[
+                { Icon: Linkedin, href: 'https://www.linkedin.com/company/purple-grid-marketing/' },
+                { Icon: Facebook, href: 'https://www.facebook.com/people/Purple-Grid-Marketing/61583351070628/' },
+              ].map(({ Icon, href }) => (
                 <a
-                  key={Icon.displayName || Icon.name}
-                  href="#"
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
                   className="bg-[#1B0032] p-2 rounded-lg hover:bg-[#5A00B0] transition-colors"
                 >
                   <Icon className="h-5 w-5" />
@@ -73,13 +88,14 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6">Services</h4>
             <ul className="space-y-3">
               {services.map((service) => (
-                <li key={service}>
-                  <a
-                    href="#services"
-                    className="text-gray-300 hover:text-purple-300 transition-colors"
+                <li key={service.label}>
+                  <button
+                    type="button"
+                    onClick={() => goToProtected(service.path)}
+                    className="text-left text-gray-300 hover:text-purple-300 transition-colors"
                   >
-                    {service}
-                  </a>
+                    {service.label}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -89,13 +105,14 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6">Company</h4>
             <ul className="space-y-3">
               {company.map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-gray-300 hover:text-purple-300 transition-colors"
+                <li key={item.label}>
+                  <button
+                    type="button"
+                    onClick={() => navigate(item.href)}
+                    className="text-left text-gray-300 hover:text-purple-300 transition-colors"
                   >
-                    {item}
-                  </a>
+                    {item.label}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -144,13 +161,14 @@ const Footer = () => {
               <h5 className="text-lg font-semibold mb-4">Support</h5>
               <ul className="space-y-2 text-gray-300">
                 {support.map((item) => (
-                  <li key={item}>
-                    <a
-                      href="#"
-                      className="hover:text-purple-300 transition-colors"
+                  <li key={item.label}>
+                    <button
+                      type="button"
+                      onClick={() => navigate(item.href)}
+                      className="text-left hover:text-purple-300 transition-colors"
                     >
-                      {item}
-                    </a>
+                      {item.label}
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -165,17 +183,27 @@ const Footer = () => {
               rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              {["Privacy Policy", "Terms of Service", "Cookie Settings"].map(
-                (item) => (
-                  <a
-                    key={item}
-                    href="#"
-                    className="text-gray-400 hover:text-purple-300 text-sm transition-colors"
-                  >
-                    {item}
-                  </a>
-                )
-              )}
+              <button
+                type="button"
+                onClick={() => navigate('/privacy')}
+                className="text-gray-400 hover:text-purple-300 text-sm transition-colors"
+              >
+                Privacy Policy
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/terms')}
+                className="text-gray-400 hover:text-purple-300 text-sm transition-colors"
+              >
+                Terms of Service
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/cookie-policy')}
+                className="text-gray-400 hover:text-purple-300 text-sm transition-colors"
+              >
+                Cookie Policy
+              </button>
             </div>
           </div>
         </div>

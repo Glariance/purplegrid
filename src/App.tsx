@@ -26,6 +26,9 @@ import SignUpPage from './pages/SignUpPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import CookiePolicyPage from './pages/CookiePolicyPage';
 
 const ScrollToHash = () => {
   const location = useLocation();
@@ -91,6 +94,9 @@ function App() {
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsOfServicePage />} />
+          <Route path="/cookie-policy" element={<CookiePolicyPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="transparency-hub" element={<TransparencyHub />} />
