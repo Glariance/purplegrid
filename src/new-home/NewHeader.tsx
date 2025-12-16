@@ -75,6 +75,20 @@ const NewHeader = () => {
             </button>
             <button
               type="button"
+              onClick={() => navigate('/amazon')}
+              className="text-gray-200 hover:text-[#D100FF] transition-colors font-medium"
+            >
+              Amazon
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/influencer')}
+              className="text-gray-200 hover:text-[#D100FF] transition-colors font-medium"
+            >
+              Influencer
+            </button>
+            <button
+              type="button"
               onClick={() => navigate('/case-studies')}
               className="text-gray-200 hover:text-[#D100FF] transition-colors font-medium"
             >
@@ -184,6 +198,26 @@ const NewHeader = () => {
               className="py-3 px-4 text-center text-gray-900 font-semibold hover:text-[#5A00B0] hover:bg-[#f7f1fc] transition-colors"
             >
               Blog
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                navigate('/amazon');
+                setIsOpen(false);
+              }}
+              className="py-3 px-4 text-center text-gray-900 font-semibold hover:text-[#5A00B0] hover:bg-[#f7f1fc] transition-colors"
+            >
+              Amazon
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                navigate('/influencer');
+                setIsOpen(false);
+              }}
+              className="py-3 px-4 text-center text-gray-900 font-semibold hover:text-[#5A00B0] hover:bg-[#f7f1fc] transition-colors"
+            >
+              Influencer
             </button>
             <button
               type="button"

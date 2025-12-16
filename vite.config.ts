@@ -8,4 +8,5 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
   base: 'https://www.purplegridmarketing.com/',
+  // base: 'http://localhost:5173/',
 });

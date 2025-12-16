@@ -85,6 +85,20 @@ const Header = () => {
               </button>
               <button
                 type="button"
+                onClick={() => goTo('/amazon')}
+                className="text-gray-700 hover:text-purple-600 transition-colors font-medium"
+              >
+                Amazon
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo('/influencer')}
+                className="text-gray-700 hover:text-purple-600 transition-colors font-medium"
+              >
+                Influencer
+              </button>
+              <button
+                type="button"
                 onClick={() => goTo('/case-studies')}
                 className="text-gray-700 hover:text-purple-600 transition-colors font-medium"
               >
@@ -188,6 +202,20 @@ const Header = () => {
                 className="py-3 px-4 text-center text-gray-900 font-semibold hover:text-purple-700 hover:bg-purple-50/80 transition-colors"
               >
                 Blog
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo('/amazon')}
+                className="py-3 px-4 text-center text-gray-900 font-semibold hover:text-purple-700 hover:bg-purple-50/80 transition-colors"
+              >
+                Amazon
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo('/influencer')}
+                className="py-3 px-4 text-center text-gray-900 font-semibold hover:text-purple-700 hover:bg-purple-50/80 transition-colors"
+              >
+                Influencer
               </button>
               <button
                 type="button"

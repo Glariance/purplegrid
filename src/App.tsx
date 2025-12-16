@@ -29,6 +29,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import CookiePolicyPage from './pages/CookiePolicyPage';
+import AmazonPage from './pages/AmazonPage';
+import InfluencerPage from './pages/InfluencerPage';
 
 const ScrollToHash = () => {
   const location = useLocation();
@@ -111,6 +113,8 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/amazon" element={<AmazonPage />} />
+          <Route path="/influencer" element={<InfluencerPage />} />
           <Route
             path="/"
             element={

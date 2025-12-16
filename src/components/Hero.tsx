@@ -26,8 +26,18 @@ const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 mb-12">
-              <button className="bg-white text-purple-800 px-8 py-4 rounded-lg font-semibold hover:bg-purple-50 transition-colors flex items-center justify-center">
-                Start Your Journey
+              <button 
+                onClick={() => navigate('/amazon')}
+                className="bg-white text-purple-800 px-8 py-4 rounded-lg font-semibold hover:bg-purple-50 transition-colors flex items-center justify-center"
+              >
+                Amazon Store
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </button>
+              <button 
+                onClick={() => navigate('/influencer')}
+                className="bg-white text-purple-800 px-8 py-4 rounded-lg font-semibold hover:bg-purple-50 transition-colors flex items-center justify-center"
+              >
+                Influencer Marketing
                 <ArrowRight className="ml-2 h-5 w-5" />
               </button>
               <button className="border-2 border-purple-300 text-purple-100 px-8 py-4 rounded-lg font-semibold hover:bg-purple-800 transition-colors">

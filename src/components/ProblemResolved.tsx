@@ -26,14 +26,14 @@ const ProblemResolved = () => {
   const aiHumanTasks = [
     {
       ai: "AI drafts emails & captions",
-      human: "humans fine‑tune tone"
+      human: "humans fine-tune tone"
     },
     {
       ai: "AI summarizes call notes", 
       human: "humans decide next steps"
     },
     {
-      ai: "AI flags low‑performing ads",
+      ai: "AI flags low-performing ads",
       human: "humans pause & pivot"
     }
   ];
@@ -45,8 +45,8 @@ const ProblemResolved = () => {
   ];
 
   const solutions = [
-    "5 AI‑augmented marketing specialists",
-    "Daily execution, follow‑ups & campaign tweaks", 
+    "5 AI-augmented marketing specialists",
+    "Daily execution, follow-ups & campaign tweaks", 
     "For the cost of hiring just one local employee"
   ];
 
@@ -83,7 +83,7 @@ const ProblemResolved = () => {
             Why most small businesses burn cash on ads
           </h2>
           <p className="text-lg text-gray-700 mb-6">
-            If you're a one‑person shop or a small team spending thousands each month on Google, Facebook, or TikTok ads… you've probably noticed:
+            If you're a one-person shop or a small team spending thousands each month on Google, Facebook, or TikTok ads… you've probably noticed:
           </p>
           
           <div className="grid md:grid-cols-2 gap-4 mb-8">
@@ -105,7 +105,7 @@ const ProblemResolved = () => {
             That isn't because ads don't work — it's because <span className="text-yellow-300 font-semibold">marketing is an everyday grind.</span>
           </p>
           <p className="text-lg text-gray-200 mb-6">
-            It's daily posts, quick replies, smart follow‑ups, campaign tweaks, and real human engagement that turns cold traffic into real revenue.
+            It's daily posts, quick replies, smart follow-ups, campaign tweaks, and real human engagement that turns cold traffic into real revenue.
           </p>
           <div className="bg-red-600 p-6 rounded-xl">
             <p className="text-xl font-semibold">But here's the catch:</p>
@@ -142,7 +142,7 @@ const ProblemResolved = () => {
 
           <div className="bg-white/10 p-6 rounded-xl mt-8">
             <p className="text-xl text-center">
-              All connected in what we call a <span className="text-yellow-300 font-bold">Purple Grid</span>: a human‑powered marketing engine, boosted by AI, working for you every day — so leads never go cold again.
+              All connected in what we call a <span className="text-yellow-300 font-bold">Purple Grid</span>: a human-powered marketing engine, boosted by AI, working for you every day — so leads never go cold again.
             </p>
           </div>
         </div>
@@ -171,7 +171,7 @@ const ProblemResolved = () => {
           </div>
 
           <div className="bg-green-50 p-6 rounded-xl mb-6">
-            <p className="text-lg font-semibold text-green-800 mb-4">By plugging in our AI‑augmented human team:</p>
+            <p className="text-lg font-semibold text-green-800 mb-4">By plugging in our AI-augmented human team:</p>
             {benefits.map((benefit, index) => (
               <div key={index} className="flex items-center mb-2">
                 <CheckCircle className="h-5 w-5 text-green-600 mr-3" />
@@ -221,7 +221,7 @@ const ProblemResolved = () => {
 
           <div className="bg-white/10 p-6 rounded-xl">
             <p className="text-xl text-center">
-              You still get the nuance, empathy, and brand voice of real people — at the speed & cost‑efficiency only AI can unlock.
+              You still get the nuance, empathy, and brand voice of real people — at the speed & cost-efficiency only AI can unlock.
             </p>
           </div>
         </div>

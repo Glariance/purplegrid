@@ -1,6 +1,30 @@
-const apiBaseUrl =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, '') ||
-  'http://localhost:8000/api';
+// Determine API base URL
+// In development mode, FORCE localhost to prevent accidental production API calls
+const getApiBaseUrl = () => {
+  // If in development mode, ALWAYS use localhost (ignore .env if it has production URL)
+  if (import.meta.env.DEV) {
+    const envUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
+    // Check if env has production URL and warn
+    if (envUrl && envUrl.includes('admin.purplegridmarketing.com')) {
+      console.warn('⚠️ WARNING: .env has production URL but you are in DEV mode.');
+      console.warn('⚠️ Forcing localhost API. Update .env to: VITE_API_BASE_URL=http://localhost:8000/api');
+      return 'http://localhost:8000/api';
+    }
+    return (envUrl?.replace(/\/$/, '') || 'http://localhost:8000/api');
+  }
+  // In production build, use environment variable or default to production
+  return (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, '') ||
+    'https://admin.purplegridmarketing.com/api';
+};
+
+const apiBaseUrl = getApiBaseUrl();
+
+// Debug: Log the API base URL in development
+// if (import.meta.env.DEV) {
+//   console.log('🔧 API Base URL:', apiBaseUrl);
+//   console.log('🔧 VITE_API_BASE_URL env:', import.meta.env.VITE_API_BASE_URL);
+//   console.log('🔧 Mode:', import.meta.env.MODE);
+// }
 
 type ContactPayload = {
   name: string;
@@ -148,6 +172,41 @@ export const resetPassword = async (payload: {
   });
 
   return handleResponse(response) as Promise<{ success: boolean; message: string }>;
+};
+
+export type AmazonFormPayload = {
+  niche?: string;
+  location?: string;
+  revenue?: string;
+  adBudget?: string;
+  businessType?: string;
+  gridTeam?: string[];
+  email?: string;
+  name?: string;
+  phone?: string;
+};
+
+export const submitAmazonForm = async (payload: AmazonFormPayload) => {
+  const response = await fetch(`${apiBaseUrl}/amazon-form`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      niche: payload.niche,
+      location: payload.location,
+      revenue: payload.revenue,
+      ad_budget: payload.adBudget,
+      business_type: payload.businessType,
+      grid_team: payload.gridTeam,
+      email: payload.email,
+      name: payload.name,
+      phone: payload.phone,
+    }),
+  });
+
+  return handleResponse(response) as Promise<{ success: boolean; message: string; data?: unknown }>;
 };
 
 export { apiBaseUrl, ApiError };
