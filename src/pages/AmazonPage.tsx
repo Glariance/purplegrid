@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Package, Search, TrendingUp, MessageSquare, BarChart3, Boxes, CheckCircle, ArrowRight, Download, Phone } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { LoginPopup } from '../components/LoginPopup';
 import { submitAmazonForm, ApiError } from '../lib/api';
 import { toast } from '../lib/toast';
 
@@ -19,6 +20,7 @@ function AmazonPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(true);
 
   const banners = [
     '/amazone-banner1.png',
@@ -686,6 +688,12 @@ function AmazonPage() {
       </section>
       </main>
       <Footer />
+      
+      {/* Login Popup */}
+      <LoginPopup 
+        isOpen={isLoginPopupOpen} 
+        onClose={() => setIsLoginPopupOpen(false)} 
+      />
     </div>
   );
 }

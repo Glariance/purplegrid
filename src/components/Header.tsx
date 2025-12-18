@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/65 backdrop-blur-lg shadow-lg transition-colors duration-300 hover:bg-white/55">
+    <header className="sticky top-0 z-[60] bg-white/65 backdrop-blur-lg shadow-lg transition-colors duration-300 hover:bg-white/55">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1">
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
