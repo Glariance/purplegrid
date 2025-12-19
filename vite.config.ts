@@ -7,6 +7,6 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  // base: 'https://www.purplegridmarketing.com/',
-  base: 'http://localhost:5173/',
+  base: 'https://www.purplegridmarketing.com/',
+  // base: 'http://localhost:5173/',
 });
